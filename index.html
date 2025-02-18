@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click to Toggle Music Game</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #game-container {
+            width: 500px;
+            min-height: 400px;
+            border: 2px solid #000;
+            background-color: #cccccc;
+            margin: 50px 0 0 30px;
+            padding: 10px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: "Courier New", Courier, monospace;
+            overflow: visible;
+        }
+        #title-bar {
+            background-color: #2e2e2e;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 3px 3px 0 0;
+            margin: -10px -10px 10px;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid black;
+            margin: 10px;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.5s, transform 0.5s;
+        }
+        .blue { background-color: blue; }
+        .red { background-color: red; }
+        .orange { background-color: #cc7a00; } /* Initially darker orange */
+        .green { background-color: green; }
+        .tan { background-color: khaki; }
+
+        .box {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #000;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            transition: none; /* Remove fade transition */
+            position: relative;
+            overflow: hidden; /* Ensure elements don't overflow */
+        }
+
+        #footer-text {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            font-style: italic;
+            color: gray;
+        }
+
+        .link-box {
+            background-color: #cccccc;
+            border: 2px solid #000;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+            width: 500px;
+            margin-left: 30px;
+        }
+        .link-box a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .img-hat, .img-sun {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: inline-block;
+            background-size: contain;
+            background-color: transparent;
+            transition: transform 0.5s, top 0.5s, background-image 0.5s; /* Transition for vertical movement, size change, and image change */
+        }
+
+        .img-hat {
+            background-image: url('mrblackhatwhite.png'); /* Default to white hat */
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .img-hat.shake {
+            animation: shake 0.5s infinite; /* Shake animation */
+        }
+
+        .img-hat.large {
+            transform: scale(2); /* Make the hat twice as big when active */
+            position: absolute;
+            top: 10px; /* Adjusted position */
+            right: 10px; /* Fixed to the top-right corner */
+            background-image: url('mrblackhatblack.png'); /* Change to black hat */
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .img-sun {
+            background-image: url('mrsunwhite.jpg'); /* Default to white sun */
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .img-sun.black {
+            background-image: url('mrsunblack.jpg'); /* Change to black sun */
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="margin-bottom: 0; padding-left: 30px;">Tehlon.com</h1>
+    <p style="font-size: 15px; margin-top: 0; padding-left: 30px;">
+        <em>This is a silly website just for fun</em>
+    </p>
+
+    <div class="link-box">
+        <div id="title-bar">GoPlaces</div>
+        <p><a href="https://tehlon-online.github.io/Home/" target="_blank">Home</a></p>
+    </div>
+
+    <div id="game-container">
+        <div id="title-bar">David Sprunki</div>
+        <div class="game-content">
+            <div id="topBox" class="box">
+                <div id="imgSun" class="img-sun"></div>
+            </div>
+            <div id="bottomBox" class="box">
+                <div id="circleBlue" class="circle blue" data-sound="snare.mp3" data-alt-sound="mixkit-horror-choir-transition-660.wav"></div>
+                <div id="circleRed" class="circle red" data-sound="toot.mp3" data-alt-sound="mixkit-knocking-sub-bass-2300.wav"></div>
+                <div id="circleOrange" class="circle orange" data-sound="boom.mp3" data-alt-sound="mixkit-cool-impact-movie-trailer-2909.wav"></div>
+                <div id="circleGreen" class="circle green" data-sound="ding.mp3" data-alt-sound="mixkit-pulsating-bass-transition-2295.wav"></div>
+                <div id="circleTan" class="circle tan" data-sound="mrfuncomp.mp3" data-alt-sound="mixkit-psychedelic-fantasy-voices-295.wav"></div>
+                <div id="imgHat" class="img-hat" data-sound="mixkit-orchestral-violin-treble-note-2279.wav"></div>
+            </div>
+        </div>
+        <div id="footer-text"> </div>
+    </div>
+
+    <script>
+        const audioPlayers = {};
+        const circles = document.querySelectorAll('.circle, .img-hat, .img-sun');
+        const topBox = document.getElementById('topBox');
+        const bottomBox = document.getElementById('bottomBox');
+        const gameContainer = document.getElementById('game-container');
+        let hatInActiveArea = false;
+
+        // Initial positions and colors of circles
+        const initialPositions = {
+            circleBlue: { parent: bottomBox, index: 0, color: 'blue', sound: 'snare.mp3', altSound: 'mixkit-horror-choir-transition-660.wav' },
+            circleRed: { parent: bottomBox, index: 1, color: 'red', sound: 'toot.mp3', altSound: 'mixkit-knocking-sub-bass-2300.wav' },
+            circleOrange: { parent: bottomBox, index: 2, color: '#cc7a00', sound: 'boom.mp3', altSound: 'mixkit-cool-impact-movie-trailer-2909.wav' },
+            circleGreen: { parent: bottomBox, index: 3, color: 'green', sound: 'ding.mp3', altSound: 'mixkit-pulsating-bass-transition-2295.wav' },
+            circleTan: { parent: bottomBox, index: 4, color: 'khaki', sound: 'mrfuncomp.mp3', altSound: 'mixkit-psychedelic-fantasy-voices-295.wav' },
+            imgHat: { parent: bottomBox, index: 5 }, // Mr. Black Hat starts in bottomBox
+            imgSun: { parent: topBox, index: 0 } // Mr. Sun starts in topBox
+        };
+
+        circles.forEach(circle => {
+            const soundFile = circle.getAttribute('data-sound');
+            const altSoundFile = circle.getAttribute('data-alt-sound');
+            if (soundFile && altSoundFile) {
+                audioPlayers[circle.id] = { primary: new Audio(soundFile), alternate: new Audio(altSoundFile) };
+                audioPlayers[circle.id].primary.loop = true;
+                audioPlayers[circle.id].alternate.loop = true;
+            }
+
+            // Set volume for specific circles
+            if (circle.id === 'circleRed') {
+                audioPlayers[circle.id].primary.volume = 0.5; // Default volume
+                audioPlayers[circle.id].alternate.volume = 1.0; // Increased volume when Mr. Black Hat is active
+            }
+
+            circle.addEventListener('click', () => {
+                const parentBox = circle.parentElement;
+                if (circle.id === 'imgHat') {
+                    triggerHatEffect();
+                } else if (circle.id === 'imgSun') {
+                    resetSunEffect();
+                } else {
+                    const audioPlayer = hatInActiveArea ? audioPlayers[circle.id].alternate : audioPlayers[circle.id].primary;
+                    if (parentBox === bottomBox) {
+                        topBox.appendChild(circle);
+                        audioPlayer.play();
+                    } else {
+                        bottomBox.appendChild(circle);
+                        audioPlayer.pause();
+                        audioPlayer.currentTime = 0;
+                    }
+                }
+            });
+        });
+
+        function triggerHatEffect() {
+            if (!hatInActiveArea) {
+                hatInActiveArea = true;
+
+                // Change backdrop color of active and inactive areas instantly
+                topBox.style.backgroundColor = '#333333'; // Dark grey color
+                bottomBox.style.backgroundColor = '#333333'; // Dark grey color
+
+                // Play Mr. Black Hat's sound once
+                const hatSound = new Audio('mixkit-orchestral-violin-treble-note-2279.wav');
+                hatSound.play();
+
+                // Stop all sounds and reset circles to original positions
+                stopAllSounds();
+                resetCirclePositions();
+
+                // Change colors of circles
+                document.getElementById('circleBlue').style.backgroundColor = '#0ff'; // Neon blue
+                document.getElementById('circleRed').style.backgroundColor = '#f00';  // Neon red
+                document.getElementById('circleOrange').style.backgroundColor = '#ff8c00'; // Brighter orange
+                document.getElementById('circleGreen').style.backgroundColor = '#0f0'; // Neon green
+                document.getElementById('circleTan').style.backgroundColor = '#ff0'; // Bright yellow
+
+                // Enlarge and shake the hat, move to upper right-hand corner, change to black hat
+                const imgHat = document.getElementById('imgHat');
+                imgHat.classList.add('large', 'shake');
+                imgHat.style.backgroundImage = "url('mrblackhatblack.png')";
+
+                // Switch places with Mr. Sun
+                const imgSun = document.getElementById('imgSun');
+                imgSun.classList.add('black'); // Change to black sun
+                imgSun.style.position = 'static'; // Change to inline positioning
+                bottomBox.appendChild(imgSun);
+                topBox.appendChild(imgHat);
+            }
+        }
+
+        function resetSunEffect() {
+            if (hatInActiveArea) {
+                hatInActiveArea = false;
+
+                // Play Mr. Sun's entry sound
+                const sunSound = new Audio('mixkit-choir-magic-shine-658.wav');
+                sunSound.play();
+
+                // Revert backdrop colors instantly
+                topBox.style.backgroundColor = '#f9f9f9';
+                bottomBox.style.backgroundColor = '#f9f9f9';
+
+                // Stop all sounds and reset circles to original positions
+                stopAllSounds();
+                resetCirclePositions();
+
+                // Revert colors of circles to original
+                for (const id in initialPositions) {
+                    const circle = document.getElementById(id);
+                    const position = initialPositions[id];
+                    circle.style.backgroundColor = position.color;
+                }
+
+                // Reset hat size and remove shake
+                const imgHat = document.getElementById('imgHat');
+                imgHat.classList.remove('large', 'shake');
+                imgHat.style.backgroundImage = "url('mrblackhatwhite.png')";
+
+                // Switch places with Mr. Sun
+                const imgSun = document.getElementById('imgSun');
+                imgSun.classList.remove('black'); // Change to white sun
+                imgSun.style.position = 'absolute'; // Change back to absolute positioning
+                topBox.appendChild(imgSun);
+                bottomBox.appendChild(imgHat);
+            }
+        }
+
+        function stopAllSounds() {
+            for (const id in audioPlayers) {
+                audioPlayers[id].primary.pause();
+                audioPlayers[id].primary.currentTime = 0;
+                audioPlayers[id].alternate.pause();
+                audioPlayers[id].alternate.currentTime = 0;
+            }
+        }
+
+        function resetCirclePositions() {
+            for (const id in initialPositions) {
+                const circle = document.getElementById(id);
+                const position = initialPositions[id];
+                position.parent.appendChild(circle);
+            }
+        }
+    </script>
+</body>
+</html>
+``` ▋
